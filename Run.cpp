@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
 
 using namespace std;
 
@@ -53,8 +54,6 @@ int commandsToRun() {
 }
 
 int runCommands() {
-    commandsToRun();
-
     int i = 0;
 
     while(i < commands.size()){
@@ -75,8 +74,58 @@ int runCommands() {
     return 0;
 }
 
+int confOrDeny() {
+    commandsToRun();
+
+    cout << "Your list:\n";
+
+    for(int i = 0; i < files.size(); i++){
+        cout << "\n" + files[i];
+    }
+
+    int confDeny;
+    cout << "\n\nConfirm (1) or deny (0) list: ";
+    cin >> confDeny;
+
+    if(confDeny == 0){
+        return 0;
+    }else{
+        runCommands();
+    }
+
+    return 0;
+}
+
+int readFile() {
+    string nameOfFile;
+    string text;
+
+    cout << "Enter name of file to read from: ";
+    cin >> nameOfFile;
+
+    // Open file and read its contents line by line
+    fstream readFile(nameOfFile);
+
+    while(getline(readFile, text)){
+        cout << "\n" + text;
+    }
+
+    readFile.close();
+
+    return 0;
+}
+
 int main() {
-    runCommands();
+    int option;
+
+    cout << "Enter 0 to type in filenames or type in 1 to read from a file: ";
+    cin >> option;
+
+    if(option == 0){
+        confOrDeny();
+    }else{
+        readFile();
+    }
 
     return 0;
 }
