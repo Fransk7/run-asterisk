@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <ctime>
 
 using namespace std;
 
@@ -97,20 +98,40 @@ int confOrDeny() {
 }
 
 int readFile() {
+    finishFilenames();
+
     string nameOfFile;
     string text;
+    int i = 0;
+    int move;
 
-    cout << "Enter name of file to read from: ";
-    cin >> nameOfFile;
+    while(i < files.size()){
+        nameOfFile = files[i];
 
-    // Open file and read its contents line by line
-    fstream readFile(nameOfFile);
+        // Open file and read its contents line by line
+        fstream readFile(nameOfFile);
 
-    while(getline(readFile, text)){
-        cout << "\n" + text;
+        while(getline(readFile, text)){
+            cout << "\n" + text;
+        }
+
+        readFile.close();
+
+        cout << "\n\nEnter a number to move onto the next file: ";
+        cin >> move;
+
+        i++;
     }
 
-    readFile.close();
+    return 0;
+}
+
+int welcome() {
+    // Get today's date and time
+    time_t today;
+    time(&today);
+
+    cout << "Run* by Fransk\t" << asctime(localtime(&today)) << "\n";
 
     return 0;
 }
@@ -118,7 +139,8 @@ int readFile() {
 int main() {
     int option;
 
-    cout << "Enter 0 to type in filenames or type in 1 to read from a file: ";
+    welcome();
+    cout << "Enter 0 to type in filenames to be run or type in 1 to type in filenames to be read: ";
     cin >> option;
 
     if(option == 0){
